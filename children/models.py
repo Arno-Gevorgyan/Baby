@@ -1,5 +1,7 @@
 from django.core.validators import RegexValidator, MinLengthValidator
 from django.db import models
+from django.utils import timezone
+
 
 STATUS_CHOICES = (
     ('published', 'Published'),
@@ -57,9 +59,11 @@ class Person(models.Model):
     disease = models.TextField('Name of disease')
     about = models.TextField('About Person')
     date_of_birth = models.DateTimeField('Person Born Date')
+    date = models.DateTimeField('Creation date', default=timezone.now)
     phone_number = models.CharField(unique=True, max_length=17,
                                     validators=[RegexValidator('^[0-9]*$'), MinLengthValidator(5)])
     email = models.EmailField('Person Email', unique=True, max_length=70)
+    city = models.CharField('City', max_length=40, default='Armenia')
     address = models.CharField('Person address', max_length=250, unique=True)
     url = models.SlugField('Url', max_length=50, unique=True)
     status = models.CharField('Status', choices=STATUS_CHOICES, default='published', max_length=10)
